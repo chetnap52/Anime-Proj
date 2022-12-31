@@ -21,17 +21,7 @@ function ListPagination({ links = {}, pagination = {}, ongetAPIData }) {
         >
           Previous
         </button>
-        {Array(5)
-          .fill(0)
-          .map((item, index) => (
-            <button
-              key={index}
-              className="btn btn-warning"
-              onClick={() => handleClick(pagination.current_page + index)}
-            >
-              {pagination.current_page + index}
-            </button>
-          ))}
+
         <button
           className="btn btn-info"
           disabled={!pagination.has_next_page}
