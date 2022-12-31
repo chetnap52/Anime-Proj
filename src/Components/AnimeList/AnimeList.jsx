@@ -13,18 +13,17 @@ const APILink = "https://api.jikan.moe/v4/characters";
 function AnimeList() {
   const [data, setData] = useState({});
   const [searchTerm, setSearchTerm] = useState("");
-  const [animeId, setAnimeId] = useState("");
-  const [animeInfo, setAnimeInfo] = useState({});
-  const [isOpen, setIsOpen] = useState(false);
-
-  const { uid } = useParams();
+  const [totalResults, setTotalresults] = useState("0");
 
   const getAPIData = (page = 0) => {
     const url = `${APILink}?page=${page}&limit=15&q=${searchTerm}&order_by=favorites&sort=desc`;
     axios.get(url).then((res) => {
       setData(res.data);
+      setTotalresults(res.data.pagination.items.total);
+      // console.log(res.data.pagination.items.total, "tot");
 
-      console.log(res.data, "Response");
+      // console.log(res.data, "Response");
+      // console.log(totalResults, "res");
     });
   };
 
@@ -32,16 +31,13 @@ function AnimeList() {
     getAPIData();
   }, [searchTerm]);
   function onSearch(e) {
-    console.log(e.target.value);
+    // console.log(e.target.value);
     setSearchTerm(e.target.value);
   }
 
-  // function openInfo(inf) {
-  //   setIsOpen(true);
-  //   setAnimeInfo(inf);
-  //   console.log(inf, "info");
-  //   console.log(animeInfo, "info2");
-  // }
+  function openInfo(link) {
+    window.open(link);
+  }
 
   const cardStyle2 = {
     backgroundColor: "rgb(242 254 255)",
@@ -62,49 +58,71 @@ function AnimeList() {
     <div>
       <SearchBar onInputChange={onSearch} />
       {/* <ul>{data.data && data.data.length > 0 && data.data.map((item) => <li key={item.mal_id}>{item.name}</li>)}</ul> */}
-      <div>
-        {/* <Modal isOpened={isOpen} onClose={() => setIsOpen(false)}>
-          <div className="row">
-            <div className="col-md-4">
-              <img alt="avatar" style={{ width: "15rem" }} src={animeInfo.images.jpg.image_url} />
-            </div>
-            <div className="col-md-8">
-              <p style={{ textAlign: "center", fontWeight: "600" }}>About</p>
-              <div className="aboutDiv">
-                <p style={{ fontSize: "13px" }}>{animeInfo.about}</p>
-              </div>
-            </div>
+      {totalResults > 0 ? (
+        <div>
+          <h5 style={{ textAlign: "center", color: "white" }}>total results showing-{totalResults}</h5>
+          <div className="row result-row">
+            {data.data &&
+              data.data.length > 0 &&
+              data.data.map((item) => (
+                <div className="col-md-12" key={item.mal_id}>
+                  <Card variant="standard" style={cardStyle2}>
+                    <table>
+                      <tr>
+                        <td>
+                          <div className="anime-image">
+                            <img src={item.images.jpg.image_url} />
+                          </div>
+                        </td>
+                        <td style={{ width: "100%", border: "2px solid #00434b8a" }}>
+                          <div className="anime-name d-flex justify-content-between">
+                            <div>{item.name}</div>
+                            <div className="d-flex align-items-center">
+                              <i class="las la-heart"></i>
+                              {item.favorites}
+                            </div>
+                          </div>
+                          <div style={{ padding: "0.4rem" }}>
+                            {item.nicknames.map((nName, index) => (
+                              <span
+                                style={{
+                                  marginRight: "0.5rem",
+                                  backgroundColor: "#00ffff61",
+                                  borderRadius: "4px",
+                                  padding: "0.3rem",
+                                  fontWeight: "600",
+                                  fontSize: "14px",
+                                }}
+                              >
+                                {nName}
+                              </span>
+                            ))}
+                          </div>
+                        </td>
+                        <td style={{ width: "100%", borderLeft: "2px solid #00434b8a" }}>
+                          <div
+                            className="d-flex justify-content-center float-right"
+                            style={{ width: "3rems !important" }}
+                          >
+                            <i
+                              style={{ cursor: "pointer" }}
+                              className="las la-arrow-right"
+                              onClick={() => openInfo(item.url)}
+                            ></i>
+                          </div>
+                        </td>
+                      </tr>
+                    </table>
+                  </Card>
+                </div>
+              ))}
           </div>
-        </Modal> */}
-        {/* <h5 style={{ textAlign: "center", color: "white" }}>total results showing-{data.data.length}</h5> */}
-        <div className="row result-row">
-          {data.data &&
-            data.data.length > 0 &&
-            data.data.map((item) => (
-              <div className="col-md-12" key={item.mal_id}>
-                <Card variant="standard" style={cardStyle2}>
-                  <table>
-                    <tr>
-                      <td>
-                        <div className="anime-image">
-                          <img src={item.images.jpg.image_url} />
-                        </div>
-                      </td>
-                      <td width="85%">
-                        <div className="anime-name">{item.name}</div>
-                      </td>
-                      {/* <td>
-                        <p style={{ cursor: "pointer" }} onClick={() => openInfo(item)}>
-                          hey
-                        </p>
-                      </td> */}
-                    </tr>
-                  </table>
-                </Card>
-              </div>
-            ))}
         </div>
-      </div>
+      ) : (
+        <div className="errorDiv">
+          <h3 style={{ color: "white", fontWeight: "600", textAlign: "center" }}>No Records Found !</h3>
+        </div>
+      )}
 
       <ListPagination links={data.links} pagination={data.pagination} ongetAPIData={getAPIData} />
     </div>
