@@ -1,0 +1,23 @@
+.modal-container {
+  background: #fff; /* fallback for old browsers */
+  /* background: -webkit-linear-gradient(to right, #cbad6d, #d53369);  */
+  /* background: linear-gradient(
+      to right,
+      #cbad6d,
+      #d53369
+    );  */
+  border: 1px solid rgb(169, 3, 119);
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 50px;
+  z-index: 1000;
+  height: 38rem;
+  width: 60rem;
+}
+.btn-close {
+  position: absolute;
+  top: 2%;
+  right: 1.5%;
+}

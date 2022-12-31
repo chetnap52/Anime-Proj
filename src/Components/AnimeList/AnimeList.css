@@ -1,0 +1,24 @@
+.result-row {
+  border-top: 1px solid rgba(255, 255, 255, 0.521);
+  padding-top: 1.4rem;
+}
+
+.anime-image {
+  background-color: blueviolet;
+}
+.anime-image img {
+  width: 6rem !important;
+  height: 7.4rem !important;
+}
+.anime-name {
+  padding: 0.5rem;
+  font-size: 17px;
+  font-weight: 600;
+  font-family: "Vollkorn", serif;
+}
+
+.aboutDiv {
+  height: 30rem;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

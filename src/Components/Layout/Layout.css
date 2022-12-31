@@ -1,0 +1,15 @@
+.content {
+  /* background-color: blueviolet !important; */
+  background-image: url(../../assets/images/bg-image-new2.png);
+  background-position: center;
+  background-size: cover;
+  height: 100%;
+  padding: 1.5rem;
+}
+.main-heading {
+  color: aliceblue;
+  font-weight: 500;
+  font-size: 40px;
+  font-family: "Vollkorn", serif;
+  text-align: center;
+}
